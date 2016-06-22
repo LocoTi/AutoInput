@@ -38,7 +38,7 @@
 									['.autoinput-box ul li:hover',[['background', '#ddd']]]
 								]);
 								$('.autoinput-box').remove();
-	                            $('body').append(str);
+	                        	$('body').append(str);
 
 	                            $('.autoinput-box li').on('click', function(){
 	                            	var value = $(this).text();
