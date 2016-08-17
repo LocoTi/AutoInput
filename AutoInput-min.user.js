@@ -14,76 +14,76 @@
 
 (function($){
     $(function(){
-        var items = ['xiaoyao9610@163.com','xiaoyao9610@hotmail.com','1424513567@qq.com'];
-		$('input').on('focus', function(){
-        var indexItem = -1;
-            var focused = $(':focus').get(0);
-            if(focused.tagName == 'INPUT'){
-                focused.onkeydown = function(event){
-                    var e = event;
-                    if(document.activeElement == focused){
-                    //Ctrl+→键
-                        if(e.ctrlKey && e.keyCode == 39){
-                            var top = $(focused).offset().top + $(focused).outerHeight() + 5;
-                            var left = $(focused).offset().left;
-                            var str = '<div class="autoinput-box">'+ '<ul>';
-                            for(var i = 0, len = items.length; i < len; i++){
-                                str += '<li>'+ items[i] + '</li>';
+    var items = ['***********@163.com','***********@hotmail.com','***********@qq.com'];
+	$('input').on('focus', function(){
+                var indexItem = -1;
+	            var focused = $(':focus').get(0);
+	            if(focused.tagName == 'INPUT'){
+	                focused.onkeydown = function(event){
+	                    var e = event;
+	                    if(document.activeElement == focused){
+                            //Ctrl+→键
+	                        if(e.ctrlKey && e.keyCode == 39){
+	                            var top = $(focused).offset().top + $(focused).outerHeight() + 5;
+	                            var left = $(focused).offset().left;
+	                            var str = '<div class="autoinput-box">'+ '<ul>';
+	                            for(var i = 0, len = items.length; i < len; i++){
+	                                str += '<li>'+ items[i] + '</li>';
+	                            }
+	                            str += '</ul>'+ '</div>';
+	                            addStylesheetRules([
+									['.autoinput-box',[['position', 'absolute'],['top',top + 'px'],['left',left + 'px'],['background-color', '#fff'],['border', '1px solid #ccc'],['border-radius','5px'],['font-size','0'],['text-align','center'],['z-index','99999']]],
+									['.autoinput-box ul',[['list-style', 'none'],['padding', '0']]],
+									['.autoinput-box ul li',[['display', 'block'],['width','220px'],['height','24px'],['line-height','24px'],['border-bottom', '1px solid #ccc'],['font-size','16px'],['cursor','pointer']]],
+									['.autoinput-box .current-li',[['background', '#ddd']]],
+									['.autoinput-box ul li:hover',[['background', '#ddd']]]
+								]);
+								$('.autoinput-box').remove();
+	                            $('body').append(str);
+
+	                            $('.autoinput-box li').on('click', function(){
+	                            	var value = $(this).text();
+	                            	$(focused).val(value);
+	                            	$('.autoinput-box').css('display', 'none');
+	                            });
+	                            $(document).on('click', function(event){
+	                            	if(event.target != focused){
+	                            		$('.autoinput-box').css('display', 'none');
+	                            	}
+	                            });
+	                        }
+                            //绑定enter
+                            if(e.keyCode == 13){
+                                var value = $('.autoinput-box .current-li').text();
+                                if(value){
+                                    $(focused).val(value);
+                                }
+                                $('.autoinput-box').css('display', 'none');
                             }
-                            str += '</ul>'+ '</div>';
-                            addStylesheetRules([
-								['.autoinput-box',[['position', 'absolute'],['top',top + 'px'],['left',left + 'px'],['background-color', '#fff'],['border', '1px solid #ccc'],['border-radius','5px'],['font-size','0'],['text-align','center'],['z-index','99999']]],
-								['.autoinput-box ul',[['list-style', 'none'],['padding', '0']]],
-								['.autoinput-box ul li',[['display', 'block'],['width','220px'],['height','24px'],['line-height','24px'],['border-bottom', '1px solid #ccc'],['font-size','16px'],['cursor','pointer']]],
-								['.autoinput-box .current-li',[['background', '#ddd']]],
-								['.autoinput-box ul li:hover',[['background', '#ddd']]]
-							]);
-							$('.autoinput-box').remove();
-                            $('body').append(str);
+	                    }
 
-                            $('.autoinput-box li').on('click', function(){
-                            	var value = $(this).text();
-                            	$(focused).val(value);
-                            	$('.autoinput-box').css('display', 'none');
-                            });
-                            $(document).on('click', function(event){
-                            	if(event.target != focused){
-                            		$('.autoinput-box').css('display', 'none');
-                            	}
-                            });
+	                    if(!e.ctrlKey && e.keyCode == 40){
+                        	indexItem = $('.autoinput-box .current-li').index();
+                        	if(indexItem == items.length - 1){
+                        		indexItem = -1;
+                        	}
+                        	indexItem++;
+                        	$('.autoinput-box li').removeClass('current-li');
+                        	$('.autoinput-box li').eq(indexItem).addClass('current-li');
                         }
-                    //绑定enter
-                    if(e.keyCode == 13){
-                        var value = $('.autoinput-box .current-li').text();
-                        if(value){
-                            $(focused).val(value);
+
+                        if(!e.ctrlKey && e.keyCode == 38){
+                        	indexItem = $('.autoinput-box .current-li').index();
+                        	if(indexItem === 0){
+                        		indexItem = items.length;
+                        	}
+                        	indexItem--;
+                        	$('.autoinput-box li').removeClass('current-li');
+                        	$('.autoinput-box li').eq(indexItem).addClass('current-li');
                         }
-                        $('.autoinput-box').css('display', 'none');
-                    }
-                    }
-
-                    if(!e.ctrlKey && e.keyCode == 40){
-                	indexItem = $('.autoinput-box .current-li').index();
-                	if(indexItem == items.length - 1){
-                		indexItem = -1;
-                	}
-                	indexItem++;
-                	$('.autoinput-box li').removeClass('current-li');
-                	$('.autoinput-box li').eq(indexItem).addClass('current-li');
-                }
-
-                if(!e.ctrlKey && e.keyCode == 38){
-                	indexItem = $('.autoinput-box .current-li').index();
-                	if(indexItem === 0){
-                		indexItem = items.length;
-                	}
-                	indexItem--;
-                	$('.autoinput-box li').removeClass('current-li');
-                	$('.autoinput-box li').eq(indexItem).addClass('current-li');
-                }
-                };
-            }
-        });
+	                };
+	            }
+	        });
 	});
 
 	function addStylesheetRules (decls) {
